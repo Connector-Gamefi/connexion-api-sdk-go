@@ -1,24 +1,3 @@
-# GO SDK for Connexion API
-
-![GitHub last commit](https://img.shields.io/github/last-commit/Connector-Gamefi/connexion-api-sdk-go)
-![GitHub top language](https://img.shields.io/github/languages/top/Connector-Gamefi/connexion-api-sdk-go?color=red)
-
-# API Documentation
-- [Official documentation](https://doc.test.connector.games/openapi-cn/#45fa4e00db)
-
-# Installation
-```bash
-go get github.com/Connector-Gamefi/connexion-api-sdk-go
-```
-
-# Usage
-
-```go
-import "github.com/Connector-Gamefi/connexion-api-sdk-go/connexionapisdk"
-```
-
-## api request example
-```go
 package example
 
 import (
@@ -42,6 +21,9 @@ func RequestGetOpenApi() ([]byte, error) {
 		"timestamp": "1675998834",
 		"topNum":    "5",
 	}
+	//sercet
+	sercet := "a05315753c2842598ee5daca4f7ef399"
+	signature := connexionapisdk.Sign(params, sercet)
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -51,10 +33,6 @@ func RequestGetOpenApi() ([]byte, error) {
 	for k, v := range params {
 		q.Add(k, fmt.Sprintf("%v", v))
 	}
-
-    //calculate signature
-	sercet := "a05315753c2842598ee5daca4f7ef399"
-	signature := connexionapisdk.Sign(params, sercet)
 
 	//set header api key & signature
 	req.Header.Set(HEADER_API_KEY, "fa61655a1aca4804b5e2c3c7a10c6257")
@@ -74,5 +52,3 @@ func RequestGetOpenApi() ([]byte, error) {
 
 	return readBytes, nil
 }
-
-```
